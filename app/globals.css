@@ -2,26 +2,172 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #fdfafc;
+    --foreground: #22151d;
+    --lml-deep: #3a0d22;
+    --lml-accent: #ad4278;
+    --lml-berry: #6d1c45;
+    --lml-wash: #f3d8e4;
+    --lml-wash2: #faf0f4;
+    --lml-cream: #fff6fa;
+    --lml-sky0: #e6c0d1;
+    --lml-sky1: #f3dde7;
+    --lml-sky2: #fbf3f6;
+  }
+
+  .dark {
+    --background: #14050d;
+    --foreground: #fdedf5;
+    --lml-deep: #250917;
+    --lml-accent: #e38bb3;
+    --lml-berry: #ad4278;
+    --lml-wash: #2e0f20;
+    --lml-wash2: #1e0915;
+    --lml-cream: #280a1c;
+    --lml-sky0: #1f0714;
+    --lml-sky1: #350d23;
+    --lml-sky2: #14050d;
+  }
+
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* Glassmorphism Styles */
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 16px 36px -12px rgba(109, 28, 69, 0.08), 0 0 0 1px rgba(173, 66, 120, 0.05);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.glass-card-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(173, 66, 120, 0.35);
+  box-shadow: 0 24px 48px -14px rgba(109, 28, 69, 0.16), 0 0 0 1px rgba(173, 66, 120, 0.2);
+}
+
+.dark .glass-card {
+  background: rgba(36, 11, 23, 0.65);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(227, 139, 179, 0.1);
+}
+
+.dark .glass-card-hover:hover {
+  background: rgba(46, 15, 32, 0.8);
+  border-color: rgba(227, 139, 179, 0.35);
+  box-shadow: 0 24px 48px -14px rgba(0, 0, 0, 0.7), 0 0 20px rgba(173, 66, 120, 0.25);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px -6px rgba(109, 28, 69, 0.1);
+}
+
+.dark .glass-pill {
+  background: rgba(33, 9, 21, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
+}
+
+/* 3D Coin & Button Shadows */
+.gold-3d-button {
+  background: linear-gradient(135deg, #fff2a8 0%, #e5b32f 25%, #be8b14 60%, #875c04 100%);
+  box-shadow: 0 10px 24px -4px rgba(190, 139, 20, 0.5),
+              0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+              0 -3px 0 0 rgba(110, 75, 4, 0.4) inset;
+  transition: all 0.3s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.gold-3d-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 32px -4px rgba(190, 139, 20, 0.65),
+              0 0 24px rgba(255, 230, 140, 0.6),
+              0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+              0 -4px 0 0 rgba(110, 75, 4, 0.5) inset;
+}
+
+.barcode-3d-button {
+  background: linear-gradient(135deg, #401026 0%, #6d1c45 40%, #ad4278 80%, #d4659b 100%);
+  box-shadow: 0 10px 26px -4px rgba(109, 28, 69, 0.5),
+              0 0 0 1px rgba(255, 255, 255, 0.25) inset,
+              0 -3px 0 0 rgba(35, 7, 20, 0.5) inset;
+  transition: all 0.3s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.barcode-3d-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 34px -4px rgba(173, 66, 120, 0.65),
+              0 0 24px rgba(227, 139, 179, 0.45),
+              0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+              0 -4px 0 0 rgba(35, 7, 20, 0.6) inset;
+}
+
+/* Lilac Meadow Ambient Animations */
+@keyframes lml-sway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.8deg); }
+}
+
+@keyframes lml-bob {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-9px) rotate(2deg); }
+}
+
+@keyframes lml-flip {
+  0% { transform: rotateY(0deg) scale(1); }
+  50% { transform: rotateY(180deg) scale(1.12); }
+  100% { transform: rotateY(360deg) scale(1); }
+}
+
+@keyframes laser-scan {
+  0% { top: 4%; opacity: 0.8; }
+  50% { top: 92%; opacity: 1; }
+  100% { top: 4%; opacity: 0.8; }
+}
+
+.animate-laser {
+  animation: laser-scan 2.4s ease-in-out infinite;
+}
+
+.lml-bob {
+  animation: lml-bob 6s ease-in-out infinite;
+}
+
+.lml-sway {
+  transform-origin: 50% 100%;
+  animation: lml-sway 5.5s ease-in-out infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(243, 216, 228, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(173, 66, 120, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(173, 66, 120, 0.7);
 }
