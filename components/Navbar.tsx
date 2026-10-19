@@ -83,9 +83,6 @@ export default function Navbar() {
                 <span className="text-base font-bold tracking-tight text-rose-950 dark:text-rose-100 group-hover:text-rose-700 dark:group-hover:text-rose-300 transition-colors">
                   Bureau of Indian Standards
                 </span>
-                <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
-                  Govt. of India
-                </span>
               </div>
               <span className="text-xs font-medium text-rose-800/70 dark:text-rose-300/70">
                 भारतीय मानक ब्यूरो · मानक: पथप्रदर्शक:

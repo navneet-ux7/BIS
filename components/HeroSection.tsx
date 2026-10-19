@@ -18,13 +18,6 @@ import Coin3D from "./Coin3D";
 
 export default function HeroSection() {
   const router = useRouter();
-  const [quickInput, setQuickInput] = useState("");
-
-  const handleQuickVerify = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!quickInput.trim()) return;
-    router.push(`/scanner?code=${encodeURIComponent(quickInput.trim())}`);
-  };
 
   return (
     <section className="relative w-full pt-2 pb-16 overflow-hidden">
@@ -149,57 +142,6 @@ export default function HeroSection() {
                   </div>
                 </div>
               </Link>
-            </div>
-
-            {/* Quick Instant Verification Search Bar */}
-            <form
-              onSubmit={handleQuickVerify}
-              className="w-full max-w-xl relative flex items-center rounded-full glass-card p-1.5 shadow-lg shadow-rose-950/10 focus-within:ring-2 focus-within:ring-rose-500 transition-all"
-            >
-              <div className="pl-4 text-rose-800 dark:text-rose-300">
-                <Search className="w-5 h-5" />
-              </div>
-              <input
-                type="text"
-                placeholder="Enter Barcode, CM/L License (e.g. CM/L-8400183) or 6-digit HUID..."
-                value={quickInput}
-                onChange={(e) => setQuickInput(e.target.value)}
-                className="w-full bg-transparent px-3 py-2 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="px-5 py-2.5 rounded-full bg-rose-800 hover:bg-rose-900 text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap"
-              >
-                <span>Check Now</span>
-              </button>
-            </form>
-
-            {/* Quick Test Links Tagline */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-4 text-xs text-rose-900/70 dark:text-rose-300/70">
-              <span className="font-semibold">Quick Test:</span>
-              <button
-                type="button"
-                onClick={() => setQuickInput("8901764012217")}
-                className="underline hover:text-rose-950 dark:hover:text-white"
-              >
-                Kinley Water (8901764012217)
-              </button>
-              <span>·</span>
-              <button
-                type="button"
-                onClick={() => setQuickInput("8909999000123")}
-                className="underline text-red-600 dark:text-red-400 font-bold hover:underline"
-              >
-                Fake Roadside Helmet (Alert)
-              </button>
-              <span>·</span>
-              <button
-                type="button"
-                onClick={() => setQuickInput("AB12CD")}
-                className="underline text-amber-700 dark:text-amber-300 font-bold hover:underline"
-              >
-                22K Gold HUID (AB12CD)
-              </button>
             </div>
           </div>
         </div>

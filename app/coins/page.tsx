@@ -58,6 +58,9 @@ function CoinsContent() {
   useEffect(() => {
     if (currentMetalInfo.grades.length > 0) {
       setSelectedGrade(currentMetalInfo.grades[0]);
+      // Set default calcGrade to 22K (916) or highest grade
+      const defaultG = currentMetalInfo.grades.find((g) => g.fineness === 916) || currentMetalInfo.grades[0];
+      setCalcGrade(defaultG.fineness);
     }
   }, [selectedMetal]);
 
@@ -656,22 +659,28 @@ function CoinsContent() {
             {/* Input fields */}
             <div className="md:col-span-6 flex flex-col gap-5">
               <div>
-                <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-2 block">
-                  Select Purity Grade / Carat:
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {currentMetalInfo.grades.slice(0, 6).map((g) => (
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
+                    Select Purity Grade / Carat (1K to 24K):
+                  </label>
+                  <span className="text-[11px] font-semibold text-rose-700 dark:text-rose-400">
+                    {currentMetalInfo.grades.find((g) => g.fineness === calcGrade)?.caratOrGrade || `${calcGrade} Fineness`}
+                  </span>
+                </div>
+                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-6 gap-1.5 max-h-56 overflow-y-auto pr-1 p-1 rounded-xl bg-zinc-50/60 dark:bg-zinc-950/40 border border-zinc-200/50 dark:border-zinc-800">
+                  {currentMetalInfo.grades.map((g) => (
                     <button
-                      key={g.fineness}
+                      key={g.finenessCode}
                       type="button"
                       onClick={() => setCalcGrade(g.fineness)}
-                      className={`p-2.5 rounded-xl text-xs font-bold transition-all ${
+                      className={`p-2 rounded-xl text-xs font-bold transition-all text-center flex flex-col items-center justify-center ${
                         calcGrade === g.fineness
-                          ? "bg-amber-600 text-white shadow-md"
-                          : "bg-white/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300"
+                          ? "bg-amber-600 text-white shadow-md scale-105"
+                          : "bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:border-amber-400"
                       }`}
                     >
-                      {g.finenessCode}
+                      <span className="text-[11px] leading-tight font-extrabold">{g.finenessCode.split(" ")[0]}</span>
+                      <span className="text-[9px] opacity-80">{g.purityPercentage}%</span>
                     </button>
                   ))}
                 </div>
@@ -680,26 +689,41 @@ function CoinsContent() {
               <div>
                 <div className="flex justify-between items-baseline mb-2">
                   <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-                    Gross Jewellery Weight (Grams):
+                    Gross Weight:
                   </label>
-                  <span className="text-sm font-black text-rose-950 dark:text-rose-100">
-                    {calcGrams} g
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-black text-rose-950 dark:text-rose-100">
+                      {calcGrams >= 1000 ? `${(calcGrams / 1000).toFixed(2)} kg (${calcGrams} g)` : `${calcGrams} g`}
+                    </span>
+                    <input
+                      type="number"
+                      min={1}
+                      max={1000}
+                      step={1}
+                      value={calcGrams}
+                      onChange={(e) => {
+                        const val = parseFloat(e.target.value);
+                        if (!isNaN(val)) setCalcGrams(Math.min(1000, Math.max(1, val)));
+                      }}
+                      className="w-20 px-2 py-1 rounded-lg border border-rose-200 dark:border-rose-900 bg-white dark:bg-zinc-950 text-xs text-center font-bold"
+                    />
+                  </div>
                 </div>
                 <input
                   type="range"
                   min={1}
-                  max={250}
-                  step={0.5}
+                  max={1000}
+                  step={1}
                   value={calcGrams}
                   onChange={(e) => setCalcGrams(parseFloat(e.target.value))}
                   className="w-full h-2 rounded-lg bg-rose-200 dark:bg-rose-950 appearance-none cursor-pointer accent-rose-700"
                 />
                 <div className="flex justify-between text-[10px] text-zinc-500 mt-1">
                   <span>1 g</span>
-                  <span>50 g</span>
                   <span>100 g</span>
                   <span>250 g</span>
+                  <span>500 g</span>
+                  <span>1 kg (1000 g)</span>
                 </div>
               </div>
             </div>
@@ -733,10 +757,21 @@ function CoinsContent() {
                     {currentMetalInfo.standardCode}
                   </span>
                 </div>
+                <div className="flex justify-between">
+                  <span>Price Benchmark Data Source:</span>
+                  <span className="font-bold text-amber-800 dark:text-amber-300">
+                    {currentMetalInfo.grades.find((g) => g.fineness === calcGrade)?.priceSource || "IBJA / Official Market"}
+                  </span>
+                </div>
               </div>
 
-              <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-4 leading-relaxed">
-                *Values are illustrative based on benchmark daily rates. Making charges (V.A.) and GST (3%) are billed extra by licensed retailers.
+              <div className="mt-4 p-2.5 rounded-xl bg-amber-100/70 dark:bg-amber-950/60 text-[11px] text-amber-900 dark:text-amber-200">
+                <span className="font-bold">Live Benchmark: </span>
+                {currentMetalInfo.liveRateNote}
+              </div>
+
+              <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-3 leading-relaxed">
+                *Values are calculated using real benchmark rates. Making charges (V.A.) and 3% GST are billed extra by licensed retailers.
               </p>
             </div>
           </div>
